@@ -8,14 +8,15 @@ logic rst;
 logic [127:0] data_out;
 logic [127:0] expect_data_out;
 logic i_en;
-
+logic o_en;
 s_sub_revamped s_sub_dut(
 
 	 .data_in(data_input), 
 	 .clk(clk),
 	 .rst(rst),
 	 .data_out(data_out),
-	 .i_en(i_en)
+	 .i_en(i_en),
+	 .o_en(o_en)
 	 );
 
 initial begin
@@ -27,6 +28,7 @@ initial begin
   $display("Input Data: %h", data_input);
   $display("Output Data: %h", data_out);
 
+  wait(o_en);
   if(data_out == expect_data_out) begin
   
       $display("PASSED!");
