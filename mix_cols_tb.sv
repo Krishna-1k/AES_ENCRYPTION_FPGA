@@ -7,23 +7,26 @@ logic clk;
 logic rst;
 logic [127:0] data_out;
 logic [127:0] expect_data_out;
-
+logic i_en;
+logic o_en;
 
 mix_cols mix_cols_dut(
 
 	 .data_in(data_input), 
 	 .clk(clk),
 	 .rst(rst),
-	 .data_out(data_out)
+	 .data_out(data_out),
+	 .i_en(i_en),
+	 .o_en(o_en)
 	 
 	 );
 
 initial begin
 
-  rst = 1; #10; rst = 0;
+  rst = 1; #10; rst = 0; i_en = 1;
   data_input = 128'hf69f2445df4f9b17ad2b417be66c3710 ;
   expect_data_out = 128'h2cfaee30f8e08480064389704477d44a;
-  #200;
+  wait(o_en);
   $display("Input Data: %h", data_input);
   $display("Output Data: %h", data_out);
 
