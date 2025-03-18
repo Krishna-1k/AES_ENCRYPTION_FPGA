@@ -1,4 +1,4 @@
-
+//main wrapper
 
 module aes_wrapper#(parameter KEY_LENGTH = 128)
     (input logic [KEY_LENGTH:0] key, 
@@ -8,17 +8,19 @@ module aes_wrapper#(parameter KEY_LENGTH = 128)
 	  output logic encrypt_data_out_rdy,
 	  output logic[127:0] encrypt_data_out);
 
+	  //Used to hold values in between rounds
 	  logic[127:0] data_in_temp;
 	  logic[127:0] data_out_temp;
 	  logic [127:0] key_in_temp;
 	  logic[127:0] key_out_temp;
 
-
+     //FSM variables
 	  logic[31:0] rnd_constant;
 	  logic skip_mix_cols;
 	  logic[3:0] current_round_state;
   	  logic[3:0] current_round_num;
 
+	  //Start done logic
 	  logic round_compute_done;
 	  logic round_compute_start;
 	  
@@ -37,7 +39,7 @@ module aes_wrapper#(parameter KEY_LENGTH = 128)
 			 case(current_round_state)
 		
 				  4'd0: begin
-				  
+				      //initial round we start with input key
 						rnd_constant <= 4'd1;
 						if(round_compute_done) begin
 						    current_round_state <= 1;
@@ -56,7 +58,7 @@ module aes_wrapper#(parameter KEY_LENGTH = 128)
 
 						end
 				  end
-				  
+				      //round 1 -> 9, we generate new key, new output round data repeatedly
 				  4'd1: begin
 						if(current_round_num == 9) begin
 						    current_round_state <= 2;
@@ -76,7 +78,7 @@ module aes_wrapper#(parameter KEY_LENGTH = 128)
 						end
 				  end
 				  
-				  4'd2: begin
+				  4'd2: begin //last round we skip mix cols
 						rnd_constant <= rnd_const_calc(current_round_num);
 						if(round_compute_done) begin
 						    current_round_state <= 0;
@@ -90,7 +92,7 @@ module aes_wrapper#(parameter KEY_LENGTH = 128)
 				  
 				  end
 				  
-				  default: begin
+				  default: begin //default to 0 state
 						rnd_constant = 4'd0;
 						current_round_state = 0;
 	
@@ -103,6 +105,7 @@ module aes_wrapper#(parameter KEY_LENGTH = 128)
 	
 	end
 	  
+//helper function to calculate round constant based on round number	  
 function [7:0] rnd_const_calc;
 
     input logic [3:0] rnd_num;
@@ -126,7 +129,7 @@ function [7:0] rnd_const_calc;
 endfunction
 
 	  
-	  
+//instantiations	  
    aes_key_expand_revamped ake(
 
        .clk(clk),
