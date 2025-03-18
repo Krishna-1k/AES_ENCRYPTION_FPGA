@@ -8,36 +8,32 @@ logic [127:0] expect_data_out;
 logic [127:0] key_in;
 logic [127:0] key_out;
 logic [127:0] expect_key_out;
-logic encrypt_data_out_rdy;
-//round round_dut(
+logic i_en;
+logic o_en;
+logic skip_mix_cols;
 
-//	 .key(key_in), 
-//	 .clk(clk),
-//	 .rst(rst),
-//	 .data_in(data_input),
-//	 .data_out(data_out)
-//	 );
-	 
-	 
-aes_wrapper dut(
-
-    .key(key_in), 
-	 .data_in(data_input), 
+round round_dut(
+	 .key(key_in), 
 	 .clk(clk),
 	 .rst(rst),
-	 .encrypt_data_out(data_out),
-	 .encrypt_data_out_rdy(encrypt_data_out_rdy)
+	 .data_in(data_input),
+	 .data_out(data_out),
+	 .i_en(i_en),
+	 .skip_mix_cols(skip_mix_cols),
+	 .o_en(o_en)	 
 	 );
+	 
+	 
 
 initial begin
 
-  rst = 1; #10; rst = 0;
-  key_in = 128'h7b0c785e27e8ad3f8223207104725dd4;
-  data_input = 128'h6bc1bee22e409f96e93d7e117393172a;
-  expect_data_out = 128'h3ad77bb40d7a3660a89ecaf32466ef97;
+  rst = 1; #10; rst = 0; #10; i_en = 1; skip_mix_cols = 0;
+  key_in = 128'ha1a135b8bc09a82b238215c9b87bf5ff;
+  data_input = 128'h0b465e1e3a49f6fe150b279245d88517;
+  expect_data_out = 128'h8643adc93f0fa0e8d14a4b76872894cb;
   $monitor("Output Data %h", data_out);
 
-  wait(encrypt_data_out_rdy);
+  wait(o_en);
   if(data_out == expect_data_out) begin
   
       $display("PASSED!");
