@@ -10,9 +10,8 @@ module s_sub_revamped(
 );
     logic [127:0] data_in_bytes;
 	 logic [127:0] data_out_bytes;
-
-	 logic assert_o_en;
 	 	 
+	 //Using 16 instances of s_box allows us to 16x the speed of computation. 
 	 genvar i;
 	 generate
 	    for(i= 0; i < 16; i=i+1) begin: s_box_transform_gen
@@ -28,7 +27,6 @@ module s_sub_revamped(
 	     if(rst) begin
 		  
 		  data_out <= 0;
-		  assert_o_en <= 0;
 		  end else begin
 		      if(i_en) begin
 		          o_en <= 1;
@@ -36,7 +34,6 @@ module s_sub_revamped(
 		      end else begin
 				    o_en <= 0;
 				end
-				assert_o_en <= i_en;
 		  end
 	 end
 
