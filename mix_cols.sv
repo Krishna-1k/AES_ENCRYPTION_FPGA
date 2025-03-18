@@ -33,7 +33,7 @@ module mix_cols
 	  assign data_out = data_temp_out;
 	  assign o_en = assert_o_en && i_en;
 	  
-	  
+	  //multiply by 3 is just multiply by 2 + multiplicand
 	  function [7:0] gf_mult3;
 	      input [7:0] multiplicand;
 			begin
@@ -41,6 +41,7 @@ module mix_cols
 	      end
 	  endfunction
 	  
+	  //multiply by 2. If MSB is 1, then we need to xor with irreducible polynomial 
 	  function [7:0] gf_mult2;
 	      input [7:0] multiplicand;
 			begin
@@ -57,10 +58,3 @@ module mix_cols
 	  
 endmodule : mix_cols
 
-
-/*
-	        data_temp_out[0+:8] <= gf_mult2(data_in[0+:8]) ^ gf_mult3(data_in[8+:8]) ^ data_in[16+:8] ^ data_in[24+:8];
-           data_temp_out[8+:8] <= (data_in[0+:8]) ^ gf_mult2(data_in[8+:8]) ^ gf_mult3(data_in[16+:8]) ^ data_in[24+:8];
-			  data_temp_out[16+:8] <= (data_in[0+:8]) ^ (data_in[8+:8] ) ^ gf_mult2(data_in[16+:8]) ^ gf_mult3(data_in[24+:8]);
-           data_temp_out[24+:8] <= gf_mult3(data_in[0+:8]) ^ (data_in[8+:8]) ^ (data_in[16+:8]) ^ gf_mult2(data_in[24+:8]);
-	*/		
