@@ -6,7 +6,10 @@ https://en.wikipedia.org/wiki/Advanced_Encryption_Standard
 
 **Project Components/Modules:**
 aes_wrapper - Main module which implements 10 rounds of the AES encryption algorithm. Encapsulates all the other modules.
+
 aes_key_expand_revamped - key expansion module. It computes keys used in each round.
+
 round - computes data after a single round. Consolidates mix_cols, s_sub_revamped, shift_rows modules.
+
 s_sub_revamped, mix_cols, shift_rows - transformations that are implemented as separate modules.
 
