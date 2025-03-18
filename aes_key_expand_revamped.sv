@@ -4,7 +4,8 @@ module aes_key_expand_revamped
 	  input logic [31:0] rnd_constant,
 	  input logic [127:0] key_in,
 	  output logic [127:0] key_out);
-	  
+	
+	  //Module to compute the next key
 	  logic [31:0] w3_transform;
 	  logic [31:0] w0, w1, w2, w3;
   	  logic [31:0] w4, w5, w6, w7;
